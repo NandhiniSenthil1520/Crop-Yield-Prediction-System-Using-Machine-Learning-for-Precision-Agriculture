@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction - Nandhini S</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .loading {
+            display: none;
+        }
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-seedling text-3xl"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold">Crop Yield Prediction</h1>
+                        <p class="text-sm opacity-90">AI-Powered Agricultural Intelligence</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-semibold">Nandhini S</p>
+                    <p class="text-xs opacity-90">Department of Artificial Intelligence and Data Science</p>
+                    <p class="text-xs opacity-90">Dr. N. G. P. Institute of Technology</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Welcome Section -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-800 mb-4">🌾 Predict Your Crop Yield</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Harness the power of machine learning to predict crop yields based on environmental factors, 
+                weather conditions, and agricultural practices. Get actionable insights to optimize your farming decisions.
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Input Form -->
+            <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-edit text-green-500 mr-3"></i>
+                    Input Parameters
+                </h3>
+                
+                <form id="predictionForm" class="space-y-6">
+                    <!-- Country/Area -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-globe text-blue-500 mr-2"></i>
+                            Country/Area
+                        </label>
+                        <select id="area" name="area" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                            <option value="">Select a country...</option>
+                        </select>
+                    </div>
+
+                    <!-- Crop Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-leaf text-green-500 mr-2"></i>
+                            Crop Type
+                        </label>
+                        <select id="item" name="item" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                            <option value="">Select a crop...</option>
+                        </select>
+                    </div>
+
+                    <!-- Year -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-calendar text-purple-500 mr-2"></i>
+                            Year
+                        </label>
+                        <input type="number" id="year" name="year" min="1990" max="2030" value="2024" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                    </div>
+
+                    <!-- Rainfall -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-cloud-rain text-blue-500 mr-2"></i>
+                            Average Rainfall (mm/year)
+                        </label>
+                        <input type="number" id="rainfall" name="rainfall" min="0" max="5000" value="1000" step="0.1"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                    </div>
+
+                    <!-- Pesticides -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-bug text-red-500 mr-2"></i>
+                            Pesticides (tonnes)
+                        </label>
+                        <input type="number" id="pesticides" name="pesticides" min="0" max="10000" value="100" step="0.1"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                    </div>
+
+                    <!-- Temperature -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-thermometer-half text-orange-500 mr-2"></i>
+                            Average Temperature (°C)
+                        </label>
+                        <input type="number" id="temperature" name="temperature" min="-50" max="50" value="20" step="0.1"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-4 px-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-magic mr-2"></i>
+                        Predict Yield
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-line text-blue-500 mr-3"></i>
+                    Prediction Results
+                </h3>
+                
+                <!-- Loading State -->
+                <div id="loading" class="loading text-center py-12">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-green-500 mx-auto mb-4"></div>
+                    <p class="text-gray-600">Analyzing your data...</p>
+                </div>
+
+                <!-- Results Display -->
+                <div id="results" class="space-y-6">
+                    <div class="text-center py-12">
+                        <i class="fas fa-chart-bar text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">Enter your parameters and click "Predict Yield" to see results</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="mt-16">
+            <h3 class="text-3xl font-bold text-gray-800 text-center mb-8">Key Features</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+                    <i class="fas fa-brain text-4xl text-purple-500 mb-4"></i>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">AI-Powered Predictions</h4>
+                    <p class="text-gray-600">Advanced machine learning algorithms trained on extensive agricultural datasets</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+                    <i class="fas fa-lightbulb text-4xl text-yellow-500 mb-4"></i>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">Smart Insights</h4>
+                    <p class="text-gray-600">Get actionable recommendations to optimize your farming practices</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 text-center card-hover">
+                    <i class="fas fa-globe-americas text-4xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">Global Coverage</h4>
+                    <p class="text-gray-600">Support for multiple countries and crop types worldwide</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-6 py-8">
+            <div class="text-center">
+                <p class="text-lg font-semibold mb-2">Crop Yield Prediction System</p>
+                <p class="text-sm opacity-75">Developed by Nandhini S</p>
+                <p class="text-sm opacity-75">Department of Artificial Intelligence and Data Science</p>
+                <p class="text-sm opacity-75">Dr. N. G. P. Institute of Technology</p>
+                <div class="mt-4">
+                    <p class="text-xs opacity-50">© 2024 All rights reserved</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let areas = [];
+        let crops = [];
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAreas();
+            loadCrops();
+        });
+
+        // Load areas from API
+        async function loadAreas() {
+            try {
+                const response = await fetch('/api/areas');
+                const data = await response.json();
+                areas = data.areas;
+                
+                const areaSelect = document.getElementById('area');
+                areas.forEach(area => {
+                    const option = document.createElement('option');
+                    option.value = area;
+                    option.textContent = area.charAt(0).toUpperCase() + area.slice(1);
+                    areaSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading areas:', error);
+            }
+        }
+
+        // Load crops from API
+        async function loadCrops() {
+            try {
+                const response = await fetch('/api/crops');
+                const data = await response.json();
+                crops = data.crops;
+                
+                const cropSelect = document.getElementById('item');
+                crops.forEach(crop => {
+                    const option = document.createElement('option');
+                    option.value = crop;
+                    option.textContent = crop.charAt(0).toUpperCase() + crop.slice(1);
+                    cropSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading crops:', error);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                area: formData.get('area'),
+                item: formData.get('item'),
+                year: parseInt(formData.get('year')),
+                rainfall: parseFloat(formData.get('rainfall')),
+                pesticides: parseFloat(formData.get('pesticides')),
+                temperature: parseFloat(formData.get('temperature'))
+            };
+
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('results').innerHTML = '';
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    displayResults(result);
+                } else {
+                    displayError(result.error);
+                }
+            } catch (error) {
+                displayError('Network error. Please try again.');
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+            }
+        });
+
+        // Display prediction results
+        function displayResults(result) {
+            const resultsDiv = document.getElementById('results');
+            
+            const yieldClass = result.prediction > 100000 ? 'text-green-600' : 
+                              result.prediction > 50000 ? 'text-yellow-600' : 'text-red-600';
+            
+            const confidenceClass = result.confidence > 80 ? 'text-green-600' : 
+                                   result.confidence > 60 ? 'text-yellow-600' : 'text-red-600';
+
+            resultsDiv.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Prediction Card -->
+                    <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 border-l-4 border-green-500">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Yield Prediction</h4>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold ${yieldClass} mb-2">
+                                ${result.prediction.toLocaleString()} hg/ha
+                            </div>
+                            <p class="text-sm text-gray-600">Predicted crop yield</p>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Card -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border-l-4 border-blue-500">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Model Confidence</h4>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold ${confidenceClass} mb-2">
+                                ${result.confidence}%
+                            </div>
+                            <p class="text-sm text-gray-600">Prediction confidence level</p>
+                        </div>
+                    </div>
+
+                    <!-- Input Summary -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">Input Summary</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><span class="font-medium">Country:</span> ${result.input_data.area}</div>
+                            <div><span class="font-medium">Crop:</span> ${result.input_data.item}</div>
+                            <div><span class="font-medium">Year:</span> ${result.input_data.year}</div>
+                            <div><span class="font-medium">Rainfall:</span> ${result.input_data.rainfall} mm</div>
+                            <div><span class="font-medium">Pesticides:</span> ${result.input_data.pesticides} tonnes</div>
+                            <div><span class="font-medium">Temperature:</span> ${result.input_data.temperature}°C</div>
+                        </div>
+                    </div>
+
+                    <!-- Insights -->
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-6 border-l-4 border-yellow-500">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">AI Insights</h4>
+                        <ul class="space-y-2">
+                            ${result.insights.map(insight => `
+                                <li class="flex items-start">
+                                    <span class="mr-2">${insight.split(' ')[0]}</span>
+                                    <span class="text-sm text-gray-700">${insight.split(' ').slice(1).join(' ')}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display error message
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>
+                        <div>
+                            <h4 class="text-lg font-semibold text-red-800">Error</h4>
+                            <p class="text-red-700">${message}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html> 
